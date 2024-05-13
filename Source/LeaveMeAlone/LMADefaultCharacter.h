@@ -53,4 +53,12 @@ private:
 
 	void MoveForward(float Value); // будет отвечать за движение персонажа по оси X.
 	void MoveRight(float Value);   // будет отвечать за движение персонажа по оси Y.
+
+	// Функции для изменения масштаба
+	void ZoomIn();
+	void ZoomOut();
+
+	// Переменные для изменения масштаба
+	float maxArmLength = 1400.0f;
+	float minArmLength = 400.0f;
 };
