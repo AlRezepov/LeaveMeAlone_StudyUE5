@@ -67,6 +67,37 @@ void ALMADefaultCharacter::Tick(float DeltaTime)
 			CurrentCursor->SetWorldLocation(ResultHit.Location);
 		}
 	}
+
+	//Проверка Stamina
+	FString StaminaString = FString::Printf(TEXT("Stamina: %.2f"), Stamina);
+	float TimeToDisplay = 2.0f;
+	FColor Color = FColor::Red;
+	int32 Key = 0;
+	if (GEngine)
+	{
+		GEngine->AddOnScreenDebugMessage(Key, TimeToDisplay, Color, StaminaString);
+	}
+
+	//Условия траты и восполнения Stamina (лучше сделать отдельной функцией)
+	if (Running)
+	{
+		if (Stamina > 0)
+		{
+			Stamina -= 0.5;
+		}
+		else
+		{
+			SprintOff();
+		}
+	}
+	else if (!Running)
+	{
+		if (Stamina <= 100)
+		{
+			Stamina += 0.1;
+		}
+	}
+
 }
 
 // Called to bind functionality to input
@@ -80,6 +111,7 @@ void ALMADefaultCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInpu
 	PlayerInputComponent->BindAction("ZoomIn", IE_Pressed, this, &ALMADefaultCharacter::ZoomIn);
 	PlayerInputComponent->BindAction("ZoomOut", IE_Pressed, this, &ALMADefaultCharacter::ZoomOut);
 
+	
 	PlayerInputComponent->BindAction("Sprint", IE_Pressed, this, &ALMADefaultCharacter::SprintOn);
 	PlayerInputComponent->BindAction("Sprint", IE_Released, this, &ALMADefaultCharacter::SprintOff);
 }
@@ -114,7 +146,7 @@ void ALMADefaultCharacter::ZoomOut()
 
 void ALMADefaultCharacter::SprintOn() 
 {
-	if (GetInputAxisValue("MoveForward") > 0.0f)
+	if (GetInputAxisValue("MoveForward") > 0.0f && Stamina > 0)
 	{
 		GetCharacterMovement()->MaxWalkSpeed = MaxSpeed;
 		Running = true;
