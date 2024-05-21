@@ -34,6 +34,16 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Cursor")
 	FVector CursorSize = FVector(20.0f, 40.0f, 40.0f);
 
+	// Функция для Sprint
+	UFUNCTION(BlueprintCallable)
+	void SprintOn();
+
+	UFUNCTION(BlueprintCallable)
+	void SprintOff();
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Sprint")
+	bool Running;
+
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
@@ -59,6 +69,11 @@ private:
 	void ZoomOut();
 
 	// Переменные для изменения масштаба
-	float maxArmLength = 1400.0f;
-	float minArmLength = 400.0f;
+	float MaxArmLength = 1400.0f;
+	float MinArmLength = 400.0f;
+
+	// Переменные для скорости перемещения персонажа
+	float MaxSpeed = 800.0f;
+	float NormalSpeed = 300.0f;
+
 };

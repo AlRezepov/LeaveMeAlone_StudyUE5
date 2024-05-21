@@ -6,6 +6,7 @@
 #include "Components/InputComponent.h"
 #include "Materials/MaterialInterface.h"
 #include "GameFramework/SpringArmComponent.h"
+#include "GameFramework/CharacterMovementComponent.h"
 #include <Kismet/GameplayStatics.h>
 #include <Kismet/KismetMathLibrary.h>
 
@@ -34,6 +35,8 @@ ALMADefaultCharacter::ALMADefaultCharacter()
 	bUseControllerRotationPitch = false;
 	bUseControllerRotationYaw = false;
 	bUseControllerRotationRoll = false;
+
+	GetCharacterMovement()->MaxWalkSpeed = NormalSpeed;
 }
 
 // Called when the game starts or when spawned
@@ -76,6 +79,9 @@ void ALMADefaultCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInpu
 
 	PlayerInputComponent->BindAction("ZoomIn", IE_Pressed, this, &ALMADefaultCharacter::ZoomIn);
 	PlayerInputComponent->BindAction("ZoomOut", IE_Pressed, this, &ALMADefaultCharacter::ZoomOut);
+
+	PlayerInputComponent->BindAction("Sprint", IE_Pressed, this, &ALMADefaultCharacter::SprintOn);
+	PlayerInputComponent->BindAction("Sprint", IE_Released, this, &ALMADefaultCharacter::SprintOff);
 }
 
 void ALMADefaultCharacter::MoveForward(float Value)
@@ -89,7 +95,7 @@ void ALMADefaultCharacter::MoveRight(float Value)
 
 void ALMADefaultCharacter::ZoomIn() 
 {
-	if (ArmLength <= maxArmLength && ArmLength > minArmLength)
+	if (ArmLength <= MaxArmLength && ArmLength > MinArmLength)
 	{
 		SpringArmComponent->TargetArmLength -= 50.0f;
 		ArmLength = SpringArmComponent->TargetArmLength;
@@ -99,9 +105,24 @@ void ALMADefaultCharacter::ZoomIn()
 
 void ALMADefaultCharacter::ZoomOut() 
 {
-	if (ArmLength < maxArmLength && ArmLength >= minArmLength)
+	if (ArmLength < MaxArmLength && ArmLength >= MinArmLength)
 	{
 		SpringArmComponent->TargetArmLength += 50.0f;
 		ArmLength = SpringArmComponent->TargetArmLength;
 	}
+}
+
+void ALMADefaultCharacter::SprintOn() 
+{
+	if (GetInputAxisValue("MoveForward") > 0.0f)
+	{
+		GetCharacterMovement()->MaxWalkSpeed = MaxSpeed;
+		Running = true;
+	}
+}
+
+void ALMADefaultCharacter::SprintOff()
+{
+	GetCharacterMovement()->MaxWalkSpeed = NormalSpeed;
+	Running = false;
 }
