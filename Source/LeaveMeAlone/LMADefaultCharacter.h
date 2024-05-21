@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
+#include "ALMAHealthComponent.h"
 #include "LMADefaultCharacter.generated.h"
 
 class UCameraComponent;
@@ -43,6 +44,10 @@ protected:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Sprint")
 	bool Running = false;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Components|Health")
+	UALMAHealthComponent* HealthComponent; 
+
 
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;

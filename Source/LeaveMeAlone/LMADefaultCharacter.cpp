@@ -37,6 +37,10 @@ ALMADefaultCharacter::ALMADefaultCharacter()
 	bUseControllerRotationRoll = false;
 
 	GetCharacterMovement()->MaxWalkSpeed = NormalSpeed;
+
+	HealthComponent = CreateDefaultSubobject<UALMAHealthComponent>("HealthComponent");
+
+
 }
 
 // Called when the game starts or when spawned
@@ -48,6 +52,7 @@ void ALMADefaultCharacter::BeginPlay()
 	{
 		CurrentCursor = UGameplayStatics::SpawnDecalAtLocation(GetWorld(), CursorMaterial, CursorSize, FVector(0));
 	}
+
 }
 
 // Called every frame
