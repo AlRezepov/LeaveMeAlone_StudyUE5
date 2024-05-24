@@ -60,17 +60,9 @@ void ALMADefaultCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	APlayerController* PC = UGameplayStatics::GetPlayerController(GetWorld(), 0);
-	if (PC)
+	if (!(HealthComponent->IsDead()))
 	{
-		FHitResult ResultHit;
-		PC->GetHitResultUnderCursor(ECC_GameTraceChannel1, true, ResultHit);
-		float FindRotatorResultYaw = UKismetMathLibrary::FindLookAtRotation(GetActorLocation(), ResultHit.Location).Yaw;
-		SetActorRotation(FQuat(FRotator(0.0f, FindRotatorResultYaw, 0.0f)));
-		if (CurrentCursor)
-		{
-			CurrentCursor->SetWorldLocation(ResultHit.Location);
-		}
+		RotationPlayerOnCursor();
 	}
 
 	//Проверка уровня Health
@@ -97,6 +89,9 @@ void ALMADefaultCharacter::Tick(float DeltaTime)
 	
 	//Условия траты и восполнения Stamina
 	StaminaControl();
+
+	//Подписка на делегат
+	HealthComponent->OnDeath.AddUObject(this, &ALMADefaultCharacter::OnDeath);
 
 }
 
@@ -191,5 +186,34 @@ void ALMADefaultCharacter::UpdateMovementStatus()
 	if (GetInputAxisValue("MoveForward") == 0.0f)
 	{
 		SprintOff();
+	}
+}
+
+void ALMADefaultCharacter::OnDeath() 
+{
+	//Заменил CurrentCursor->DestroyRenderState_Concurrent(); из за ошибки рендеринга
+	CurrentCursor->DestroyComponent();
+
+	PlayAnimMontage(DeathMontage);
+	GetCharacterMovement()->DisableMovement();
+	SetLifeSpan(50.0f);
+	if (Controller)
+	{
+		Controller->ChangeState(NAME_Spectating);
+	}
+}
+
+void ALMADefaultCharacter::RotationPlayerOnCursor() 
+{
+	APlayerController* PC = UGameplayStatics::GetPlayerController(GetWorld(), 0);
+	if (PC)
+	{
+		FHitResult ResultHit;
+		PC->GetHitResultUnderCursor(ECC_GameTraceChannel1, true, ResultHit);
+		float FindRotatorResultYaw = UKismetMathLibrary::FindLookAtRotation(GetActorLocation(), ResultHit.Location).Yaw; SetActorRotation(FQuat(FRotator(0.0f, FindRotatorResultYaw, 0.0f))); 
+		if (CurrentCursor) 
+		{
+			CurrentCursor->SetWorldLocation(ResultHit.Location); 
+		}
 	}
 }

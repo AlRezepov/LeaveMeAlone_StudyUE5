@@ -11,6 +11,7 @@ class UCameraComponent;
 class USpringArmComponent;
 class UDecalComponent;
 class UMaterialInterface;
+class UAnimMontage;
 
 UCLASS()
 class LEAVEMEALONE_API ALMADefaultCharacter : public ACharacter
@@ -38,6 +39,9 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Cursor")
 	FVector CursorSize = FVector(20.0f, 40.0f, 40.0f);
 
+	UPROPERTY(EditDefaultsOnly, Category = "Animation")
+	UAnimMontage* DeathMontage;
+
 	// Функция для Sprint
 	UFUNCTION(BlueprintCallable)
 	void SprintOn();
@@ -48,9 +52,9 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Sprint")
 	bool Running = false;
 
-
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
+
 
 public:
 	// Called every frame
@@ -85,5 +89,12 @@ private:
 	void StaminaControl();
 	void UpdateMovementStatus();
 	float Stamina = 100.0f;
+
+	//Смерть персонажа
+	void OnDeath();
+
+	//Отключение интерпретации персонажа относительно положения курсора.
+	void RotationPlayerOnCursor();
+
 
 };

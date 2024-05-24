@@ -12,6 +12,11 @@ UALMAHealthComponent::UALMAHealthComponent()
 	// ...
 }
 
+bool UALMAHealthComponent::IsDead() const
+{
+	return Health <= 0.0f;
+}
+
 // Called when the game starts
 void UALMAHealthComponent::BeginPlay()
 {
@@ -29,5 +34,15 @@ void UALMAHealthComponent::BeginPlay()
 void UALMAHealthComponent::OnTakeAnyDamage(
 	AActor* DamagedActor, float Damage, const class UDamageType* DamageType, class AController* InstigatedBy, AActor* DamageCauser)
 {
-	Health -= Damage;
+	if (IsDead())
+	{
+		return;
+	}
+
+	Health = FMath::Clamp(Health - Damage, 0.0f, MaxHealth);
+
+	if (IsDead())
+	{
+		OnDeath.Broadcast();
+	}
 }
