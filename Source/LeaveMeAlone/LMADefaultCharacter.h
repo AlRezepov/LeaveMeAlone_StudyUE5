@@ -28,6 +28,9 @@ protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Components")
 	UCameraComponent* CameraComponent;
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Components|Health")
+	UALMAHealthComponent* HealthComponent; 
+
 	UPROPERTY()
 	UDecalComponent* CurrentCursor = nullptr;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Cursor")
@@ -44,9 +47,6 @@ protected:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Sprint")
 	bool Running = false;
-
-	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Components|Health")
-	UALMAHealthComponent* HealthComponent; 
 
 
 	// Called when the game starts or when spawned
@@ -77,11 +77,13 @@ private:
 	float MaxArmLength = 1400.0f;
 	float MinArmLength = 400.0f;
 
-	// Переменные для скорости перемещения персонажа
+	// Переменные для скорости перемещения персонажа 
 	float MaxSpeed = 800.0f;
 	float NormalSpeed = 300.0f;
 
-	//Параметр выносливости
+	//Параметр и функция выносливости
+	void StaminaControl();
+	void UpdateMovementStatus();
 	float Stamina = 100.0f;
 
 };

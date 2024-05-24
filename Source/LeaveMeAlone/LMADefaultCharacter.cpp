@@ -83,25 +83,11 @@ void ALMADefaultCharacter::Tick(float DeltaTime)
 		GEngine->AddOnScreenDebugMessage(Key, TimeToDisplay, Color, StaminaString);
 	}
 
-	//Условия траты и восполнения Stamina (лучше сделать отдельной функцией)
-	if (Running)
-	{
-		if (Stamina > 0)
-		{
-			Stamina -= 0.5;
-		}
-		else
-		{
-			SprintOff();
-		}
-	}
-	else if (!Running)
-	{
-		if (Stamina <= 100)
-		{
-			Stamina += 0.1;
-		}
-	}
+	// Проверка, движется ли персонаж вперёд
+	UpdateMovementStatus();
+	
+	//Условия траты и восполнения Stamina
+	StaminaControl();
 
 }
 
@@ -156,10 +142,45 @@ void ALMADefaultCharacter::SprintOn()
 		GetCharacterMovement()->MaxWalkSpeed = MaxSpeed;
 		Running = true;
 	}
+	else
+	{
+		Running = false;
+	}
 }
 
 void ALMADefaultCharacter::SprintOff()
 {
 	GetCharacterMovement()->MaxWalkSpeed = NormalSpeed;
 	Running = false;
+}
+
+void ALMADefaultCharacter::StaminaControl() 
+{
+	if (Running)
+	{
+		if (Stamina > 0)
+		{
+			Stamina -= 0.5;
+		}
+		else
+		{
+			SprintOff();
+		}
+	}
+	else if (!Running)
+	{
+		if (Stamina <= 100)
+		{
+			Stamina += 1;
+		}
+	}
+}
+
+void ALMADefaultCharacter::UpdateMovementStatus()
+{
+	// Проверка, движется ли персонаж вперёд
+	if (GetInputAxisValue("MoveForward") == 0.0f)
+	{
+		SprintOff();
+	}
 }
