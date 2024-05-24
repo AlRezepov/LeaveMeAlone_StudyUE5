@@ -55,6 +55,9 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
+	//Функция при срабатывании делегата OnHealthChanged
+	void OnHealthChanged(float NewHealth); 
+
 
 public:
 	// Called every frame

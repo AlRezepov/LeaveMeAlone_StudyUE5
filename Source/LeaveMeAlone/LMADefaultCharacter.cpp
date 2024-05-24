@@ -53,6 +53,22 @@ void ALMADefaultCharacter::BeginPlay()
 		CurrentCursor = UGameplayStatics::SpawnDecalAtLocation(GetWorld(), CursorMaterial, CursorSize, FVector(0));
 	}
 
+	OnHealthChanged(HealthComponent->GetHealth());
+	HealthComponent->OnHealthChanged.AddUObject(this, &ALMADefaultCharacter::OnHealthChanged);
+
+}
+
+void ALMADefaultCharacter::OnHealthChanged(float NewHealth) 
+{
+	// Проверка уровня Health
+	FString HealthString = FString::Printf(TEXT("Health: %.2f"), HealthComponent->GetHealth());
+	float TimeToDisplay = 2.0f;
+	FColor HealthColor = FColor::Green;
+	int32 HealthKey = 0;
+	if (GEngine)
+	{
+		GEngine->AddOnScreenDebugMessage(HealthKey, TimeToDisplay, HealthColor, HealthString);
+	}
 }
 
 // Called every frame
@@ -65,18 +81,9 @@ void ALMADefaultCharacter::Tick(float DeltaTime)
 		RotationPlayerOnCursor();
 	}
 
-	//Проверка уровня Health
-	FString HealthString = FString::Printf(TEXT("Health: %.2f"), HealthComponent->GetHealth());
-	float TimeToDisplay = 2.0f;
-	FColor HealthColor = FColor::Green;
-	int32 HealthKey = 0;
-	if (GEngine)
-	{
-		GEngine->AddOnScreenDebugMessage(HealthKey, TimeToDisplay, HealthColor, HealthString);
-	}
-
 	// Проверка уровня Stamina
 	FString StaminaString = FString::Printf(TEXT("Stamina: %.2f"), Stamina);
+	float TimeToDisplay = 2.0f;
 	FColor StaminaColor = FColor::Red;
 	int32 StaminaKey = 1;
 	if (GEngine)

@@ -7,6 +7,7 @@
 #include "ALMAHealthComponent.generated.h"
 
 DECLARE_MULTICAST_DELEGATE(FOnDeath);
+DECLARE_MULTICAST_DELEGATE_OneParam(FOnHealthChanged, float);
 
 UCLASS(ClassGroup = (Custom), meta = (BlueprintSpawnableComponent))
 class LEAVEMEALONE_API UALMAHealthComponent : public UActorComponent
@@ -24,6 +25,7 @@ public:
 	bool IsDead() const;
 
 	FOnDeath OnDeath;
+	FOnHealthChanged OnHealthChanged;
 
 protected:
 	// Called when the game starts
