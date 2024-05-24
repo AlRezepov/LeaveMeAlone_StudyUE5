@@ -66,6 +66,10 @@ public:
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
+	UFUNCTION() 
+	UALMAHealthComponent* GetHealthComponent() const { return HealthComponent; } 
+
+
 private:
 	float YRotation = -75.0f; // отвечает за поворот камеры по оси Y.
 

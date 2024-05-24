@@ -47,3 +47,19 @@ void UALMAHealthComponent::OnTakeAnyDamage(
 		OnDeath.Broadcast();
 	}
 }
+
+bool UALMAHealthComponent::AddHealth(float NewHealth)
+{
+	if (IsDead() || IsHealthFull())
+	{
+		return false;
+	}
+	Health = FMath::Clamp(Health + NewHealth, 0.0f, MaxHealth);
+	OnHealthChanged.Broadcast(Health);
+	return true;
+}
+
+bool UALMAHealthComponent::IsHealthFull() const
+{
+	return FMath::IsNearlyEqual(Health, MaxHealth);
+}

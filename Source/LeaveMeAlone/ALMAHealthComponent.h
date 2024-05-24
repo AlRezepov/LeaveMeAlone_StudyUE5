@@ -27,6 +27,9 @@ public:
 	FOnDeath OnDeath;
 	FOnHealthChanged OnHealthChanged;
 
+	bool AddHealth(float NewHealth);
+	bool IsHealthFull() const;
+
 protected:
 	// Called when the game starts
 	virtual void BeginPlay() override;
