@@ -6,19 +6,17 @@
 #include "Components/ActorComponent.h"
 #include "ALMAHealthComponent.generated.h"
 
-
-UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
+UCLASS(ClassGroup = (Custom), meta = (BlueprintSpawnableComponent))
 class LEAVEMEALONE_API UALMAHealthComponent : public UActorComponent
 {
 	GENERATED_BODY()
 
-public:	
+public:
 	// Sets default values for this component's properties
 	UALMAHealthComponent();
 
 	UFUNCTION(BlueprintCallable)
 	float GetHealth() const { return Health; }
-
 
 protected:
 	// Called when the game starts
@@ -28,5 +26,9 @@ protected:
 	float MaxHealth = 100.0f;
 
 private:
+	UFUNCTION()
+	void OnTakeAnyDamage(
+		AActor* DamagedActor, float Damage, const class UDamageType* DamageType, class AController* InstigatedBy, AActor* DamageCauser);
+
 	float Health = 0.0f;
 };

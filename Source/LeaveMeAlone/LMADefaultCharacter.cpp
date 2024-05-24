@@ -73,14 +73,23 @@ void ALMADefaultCharacter::Tick(float DeltaTime)
 		}
 	}
 
-	//Проверка Stamina
-	FString StaminaString = FString::Printf(TEXT("Stamina: %.2f"), Stamina);
+	//Проверка уровня Health
+	FString HealthString = FString::Printf(TEXT("Health: %.2f"), HealthComponent->GetHealth());
 	float TimeToDisplay = 2.0f;
-	FColor Color = FColor::Red;
-	int32 Key = 0;
+	FColor HealthColor = FColor::Green;
+	int32 HealthKey = 0;
 	if (GEngine)
 	{
-		GEngine->AddOnScreenDebugMessage(Key, TimeToDisplay, Color, StaminaString);
+		GEngine->AddOnScreenDebugMessage(HealthKey, TimeToDisplay, HealthColor, HealthString);
+	}
+
+	// Проверка уровня Stamina
+	FString StaminaString = FString::Printf(TEXT("Stamina: %.2f"), Stamina);
+	FColor StaminaColor = FColor::Red;
+	int32 StaminaKey = 1;
+	if (GEngine)
+	{
+		GEngine->AddOnScreenDebugMessage(StaminaKey, TimeToDisplay, StaminaColor, StaminaString);
 	}
 
 	// Проверка, движется ли персонаж вперёд
@@ -169,7 +178,7 @@ void ALMADefaultCharacter::StaminaControl()
 	}
 	else if (!Running)
 	{
-		if (Stamina <= 100)
+		if (Stamina < 100)
 		{
 			Stamina += 1;
 		}
