@@ -1,6 +1,5 @@
 // LeaveMeAlone Game by Netologiya. All RightsReserved.
 
-
 #include "LMAWeaponComponent.h"
 
 // Sets default values for this component's properties
@@ -13,18 +12,15 @@ ULMAWeaponComponent::ULMAWeaponComponent()
 	// ...
 }
 
-
 // Called when the game starts
 void ULMAWeaponComponent::BeginPlay()
 {
 	Super::BeginPlay();
 
 	SpawnWeapon();
-	
 }
 
-
-void ULMAWeaponComponent::SpawnWeapon() 
+void ULMAWeaponComponent::SpawnWeapon()
 {
 	Weapon = GetWorld()->SpawnActor<ALMA_BaseWeapon>(WeaponClass);
 	if (Weapon)
@@ -38,6 +34,14 @@ void ULMAWeaponComponent::SpawnWeapon()
 	}
 }
 
+void ULMAWeaponComponent::Fire() 
+{
+	if (Weapon)
+	{
+		Weapon->Fire();
+	}
+}
+
 // Called every frame
 void ULMAWeaponComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
 {
@@ -45,4 +49,3 @@ void ULMAWeaponComponent::TickComponent(float DeltaTime, ELevelTick TickType, FA
 
 	// ...
 }
-

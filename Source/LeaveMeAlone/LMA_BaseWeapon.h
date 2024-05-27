@@ -17,12 +17,19 @@ public:
 	// Sets default values for this actor's properties
 	ALMA_BaseWeapon();
 
+	void Fire();
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Weapon")
 	USkeletalMeshComponent* WeaponComponent;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Weapon")
+	float TraceDistance = 800.0f;
+
+	void Shoot();
 
 public:	
 	// Called every frame

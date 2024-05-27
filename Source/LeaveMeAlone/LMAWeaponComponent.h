@@ -8,33 +8,33 @@
 #include "GameFramework/Character.h"
 #include "LMAWeaponComponent.generated.h"
 
-UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
+UCLASS(ClassGroup = (Custom), meta = (BlueprintSpawnableComponent))
 class LEAVEMEALONE_API ULMAWeaponComponent : public UActorComponent
 {
 	GENERATED_BODY()
 
-public:	
+public:
 	// Sets default values for this component's properties
 	ULMAWeaponComponent();
+
+	void Fire();
 
 protected:
 	// Called when the game starts
 	virtual void BeginPlay() override;
 
-	UPROPERTY(EditAnywhere, Category = "Weapon") 
+	UPROPERTY(EditAnywhere, Category = "Weapon")
 	TSubclassOf<class ALMA_BaseWeapon> WeaponClass;
 
 	UPROPERTY(EditAnywhere, Category = "Weapon")
 	FName SocketName;
 
-	UPROPERTY() 
+	UPROPERTY()
 	ALMA_BaseWeapon* Weapon = nullptr;
 
 	void SpawnWeapon();
 
-public:	
+public:
 	// Called every frame
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
-
-		
 };
