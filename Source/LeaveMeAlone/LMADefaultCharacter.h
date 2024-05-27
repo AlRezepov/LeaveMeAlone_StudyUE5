@@ -14,6 +14,7 @@ class UDecalComponent;
 class UMaterialInterface;
 class UAnimMontage;
 
+
 UCLASS()
 class LEAVEMEALONE_API ALMADefaultCharacter : public ACharacter
 {
@@ -71,7 +72,9 @@ public:
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
 	UFUNCTION() 
-	UALMAHealthComponent* GetHealthComponent() const { return HealthComponent; } 
+	UALMAHealthComponent* GetHealthComponent() const { return HealthComponent; }
+
+	bool IsRunning() const;
 
 
 private:

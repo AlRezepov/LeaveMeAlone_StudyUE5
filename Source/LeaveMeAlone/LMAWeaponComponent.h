@@ -6,7 +6,10 @@
 #include "Components/ActorComponent.h"
 #include "LMA_BaseWeapon.h"
 #include "GameFramework/Character.h"
+#include "LMAReloadFinishedAnimNotify.h"
 #include "LMAWeaponComponent.generated.h"
+
+class ALMADefaultCharacter;
 
 UCLASS(ClassGroup = (Custom), meta = (BlueprintSpawnableComponent))
 class LEAVEMEALONE_API ULMAWeaponComponent : public UActorComponent
@@ -18,6 +21,8 @@ public:
 	ULMAWeaponComponent();
 
 	void Fire();
+	void Reload();
+	bool CanReload() const;
 
 protected:
 	// Called when the game starts
@@ -33,6 +38,14 @@ protected:
 	ALMA_BaseWeapon* Weapon = nullptr;
 
 	void SpawnWeapon();
+
+	UPROPERTY(EditDefaultsOnly, Category = "Weapon")
+	UAnimMontage* ReloadMontage;
+
+	bool AnimReloading = false;
+
+	void InitAnimNotify();
+	void OnNotifyReloadFinished(USkeletalMeshComponent* SkeletalMesh);
 
 public:
 	// Called every frame

@@ -120,6 +120,9 @@ void ALMADefaultCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInpu
 	PlayerInputComponent->BindAction("Sprint", IE_Released, this, &ALMADefaultCharacter::SprintOff);
 
 	PlayerInputComponent->BindAction("Fire", IE_Pressed, WeaponComponent, &ULMAWeaponComponent::Fire);
+
+	
+	PlayerInputComponent->BindAction("Reload", IE_Pressed, WeaponComponent, &ULMAWeaponComponent::Reload);
 }
 
 void ALMADefaultCharacter::MoveForward(float Value)
@@ -227,4 +230,9 @@ void ALMADefaultCharacter::RotationPlayerOnCursor()
 			CurrentCursor->SetWorldLocation(ResultHit.Location); 
 		}
 	}
+}
+
+bool ALMADefaultCharacter::IsRunning() const 
+{
+	return Running;
 }

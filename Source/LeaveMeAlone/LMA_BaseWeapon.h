@@ -23,12 +23,13 @@ UCLASS()
 class LEAVEMEALONE_API ALMA_BaseWeapon : public AActor
 {
 	GENERATED_BODY()
-	
-public:	
+
+public:
 	// Sets default values for this actor's properties
 	ALMA_BaseWeapon();
 
 	void Fire();
+	void ChangeClip();
 
 protected:
 	// Called when the game starts or when spawned
@@ -49,11 +50,8 @@ protected:
 
 	void DecrementBullets();
 	bool IsCurrentClipEmpty() const;
-	void ChangeClip();
 
-
-public:	
+public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
-
 };
