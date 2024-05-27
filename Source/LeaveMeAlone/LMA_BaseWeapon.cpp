@@ -34,6 +34,40 @@ void ALMA_BaseWeapon::Shoot()
 	{
 		DrawDebugSphere(GetWorld(), HitResult.ImpactPoint, 5.0f, 24, FColor::Red, false, 1.0f);
 	}
+
+	
+	DecrementBullets();
+}
+
+void ALMA_BaseWeapon::DecrementBullets() 
+{
+	
+	CurrentAmmoWeapon.Bullets -= 1;
+
+	//Отображение кол-ва патронов
+	FString BulletsString = FString::Printf(TEXT("Bullets: %d"), CurrentAmmoWeapon.Bullets);
+	float TimeToDisplay = 2.0f;
+	FColor BulletsColor = FColor::Blue;
+	int32 BulletsKey = 2;
+	if (GEngine)
+	{
+		GEngine->AddOnScreenDebugMessage(BulletsKey, TimeToDisplay, BulletsColor, BulletsString);
+	}
+
+	if (IsCurrentClipEmpty())
+	{
+		ChangeClip();
+	}
+}
+
+bool ALMA_BaseWeapon::IsCurrentClipEmpty() const
+{
+	return CurrentAmmoWeapon.Bullets == 0;
+}
+
+void ALMA_BaseWeapon::ChangeClip() 
+{
+	CurrentAmmoWeapon.Bullets = AmmoWeapon.Bullets;
 }
 
 void ALMA_BaseWeapon::Fire()
