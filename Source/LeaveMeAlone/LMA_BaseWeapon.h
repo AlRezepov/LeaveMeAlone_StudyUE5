@@ -7,6 +7,7 @@
 #include "LMA_BaseWeapon.generated.h"
 
 class USkeletalMeshComponent;
+class ULMAWeaponComponent;
 
 USTRUCT(BlueprintType) struct FAmmoWeapon
 {
@@ -28,20 +29,24 @@ public:
 	// Sets default values for this actor's properties
 	ALMA_BaseWeapon();
 
-	void Fire();
+	void Fire(bool OnFire);
 	void ChangeClip();
 
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
+	void Shoot();
+	bool IsFire = false;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Weapon")
+	float ShootInterval = 0.1f;
+
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Weapon")
-	USkeletalMeshComponent* WeaponComponent;
+	USkeletalMeshComponent* WeaponSkeletalMeshComponent;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Weapon")
 	float TraceDistance = 800.0f;
-
-	void Shoot();
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Weapon")
 	FAmmoWeapon AmmoWeapon{30, 0, true};
@@ -50,6 +55,12 @@ protected:
 
 	void DecrementBullets();
 	bool IsCurrentClipEmpty() const;
+
+private:
+	
+	//Переменные таймера
+	FTimerHandle TimerHandle;
+	bool IsTimerActive;
 
 public:
 	// Called every frame

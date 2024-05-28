@@ -19,8 +19,10 @@ class LEAVEMEALONE_API ULMAWeaponComponent : public UActorComponent
 public:
 	// Sets default values for this component's properties
 	ULMAWeaponComponent();
-
+	
 	void Fire();
+	void FireOff();
+
 	void Reload();
 	bool CanReload() const;
 

@@ -36,13 +36,23 @@ void ULMAWeaponComponent::SpawnWeapon()
 	}
 }
 
+
 void ULMAWeaponComponent::Fire()
 {
 	if (Weapon && !AnimReloading)
 	{
-		Weapon->Fire();
+		Weapon->Fire(true);
 	}
 }
+
+void ULMAWeaponComponent::FireOff() 
+{
+	if (Weapon)
+	{
+		Weapon->Fire(false);
+	}
+}
+
 
 void ULMAWeaponComponent::InitAnimNotify()
 {

@@ -2,6 +2,8 @@
 
 
 #include "LMA_BaseWeapon.h"
+#include "LMAWeaponComponent.h"
+
 
 // Sets default values
 ALMA_BaseWeapon::ALMA_BaseWeapon()
@@ -9,8 +11,10 @@ ALMA_BaseWeapon::ALMA_BaseWeapon()
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
-	WeaponComponent = CreateDefaultSubobject<USkeletalMeshComponent>("Weapon");
-	SetRootComponent(WeaponComponent);
+	WeaponSkeletalMeshComponent = CreateDefaultSubobject<USkeletalMeshComponent>("Weapon");
+	SetRootComponent(WeaponSkeletalMeshComponent);
+
+	
 
 }
 
@@ -18,12 +22,28 @@ ALMA_BaseWeapon::ALMA_BaseWeapon()
 void ALMA_BaseWeapon::BeginPlay()
 {
 	Super::BeginPlay();
-	
+
 }
 
-void ALMA_BaseWeapon::Shoot() 
+void ALMA_BaseWeapon::Fire(bool OnFire) 
 {
-	const FTransform SocketTransform = WeaponComponent->GetSocketTransform("Muzzle");
+	this->IsFire = OnFire;
+	if (IsFire && !IsTimerActive)
+	{
+		GetWorldTimerManager().SetTimer(TimerHandle, this, &ALMA_BaseWeapon::Shoot, ShootInterval, true);
+		IsTimerActive = true;
+	}
+	else if (!IsFire && IsTimerActive)
+	{
+		GetWorldTimerManager().ClearTimer(TimerHandle);
+		IsTimerActive = false;
+	}
+
+}
+
+void ALMA_BaseWeapon::Shoot()
+{
+	const FTransform SocketTransform = WeaponSkeletalMeshComponent->GetSocketTransform("Muzzle");
 	const FVector TraceStart = SocketTransform.GetLocation();
 	const FVector ShootDirection = SocketTransform.GetRotation().GetForwardVector();
 	const FVector TraceEnd = TraceStart + ShootDirection * TraceDistance;
@@ -35,7 +55,6 @@ void ALMA_BaseWeapon::Shoot()
 		DrawDebugSphere(GetWorld(), HitResult.ImpactPoint, 5.0f, 24, FColor::Red, false, 1.0f);
 	}
 
-	
 	DecrementBullets();
 }
 
@@ -43,6 +62,11 @@ void ALMA_BaseWeapon::DecrementBullets()
 {
 	
 	CurrentAmmoWeapon.Bullets -= 1;
+
+	if (IsCurrentClipEmpty())
+	{
+		ChangeClip();
+	}
 
 	//Отображение кол-ва патронов
 	FString BulletsString = FString::Printf(TEXT("Bullets: %d"), CurrentAmmoWeapon.Bullets);
@@ -52,11 +76,6 @@ void ALMA_BaseWeapon::DecrementBullets()
 	if (GEngine)
 	{
 		GEngine->AddOnScreenDebugMessage(BulletsKey, TimeToDisplay, BulletsColor, BulletsString);
-	}
-
-	if (IsCurrentClipEmpty())
-	{
-		ChangeClip();
 	}
 }
 
@@ -70,15 +89,11 @@ void ALMA_BaseWeapon::ChangeClip()
 	CurrentAmmoWeapon.Bullets = AmmoWeapon.Bullets;
 }
 
-void ALMA_BaseWeapon::Fire()
-{
-	Shoot();
-}
-
 // Called every frame
 void ALMA_BaseWeapon::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+	Fire(IsFire);
 }
 
