@@ -34,6 +34,7 @@ void ULMAWeaponComponent::SpawnWeapon()
 			Weapon->AttachToComponent(Character->GetMesh(), AttachmentRules, SocketName);
 		}
 	}
+	Weapon->OnBulletsFinished.AddUObject(this, &ULMAWeaponComponent::OnBulletsFinished);
 }
 
 
@@ -81,10 +82,15 @@ void ULMAWeaponComponent::OnNotifyReloadFinished(USkeletalMeshComponent* Skeleta
 	}
 }
 
+void ULMAWeaponComponent::OnBulletsFinished()
+{
+	Reload();
+}
+
 bool ULMAWeaponComponent::CanReload() const
 {
 	const auto Character = Cast<ALMADefaultCharacter>(GetOwner());
-	if (Character->IsRunning())
+	if (Character->IsRunning() && Weapon->IsCurrentClipFull())
 	{
 		return false;
 	}
@@ -96,6 +102,8 @@ bool ULMAWeaponComponent::CanReload() const
 
 void ULMAWeaponComponent::Reload()
 {
+	FireOff();
+
 	if (!CanReload())
 	{
 		return;
@@ -105,6 +113,7 @@ void ULMAWeaponComponent::Reload()
 	AnimReloading = true;
 	ACharacter* Character = Cast<ACharacter>(GetOwner());
 	Character->PlayAnimMontage(ReloadMontage);
+
 }
 
 // Called every frame

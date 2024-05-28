@@ -2,7 +2,6 @@
 
 
 #include "LMA_BaseWeapon.h"
-#include "LMAWeaponComponent.h"
 
 
 // Sets default values
@@ -63,8 +62,9 @@ void ALMA_BaseWeapon::DecrementBullets()
 	
 	CurrentAmmoWeapon.Bullets -= 1;
 
-	if (IsCurrentClipEmpty())
+	if (IsCurrentClipEmpty() && !IsCurrentClipFull())
 	{
+		OnBulletsFinished.Broadcast();
 		ChangeClip();
 	}
 
@@ -77,11 +77,17 @@ void ALMA_BaseWeapon::DecrementBullets()
 	{
 		GEngine->AddOnScreenDebugMessage(BulletsKey, TimeToDisplay, BulletsColor, BulletsString);
 	}
+
 }
 
 bool ALMA_BaseWeapon::IsCurrentClipEmpty() const
 {
 	return CurrentAmmoWeapon.Bullets == 0;
+}
+
+bool ALMA_BaseWeapon::IsCurrentClipFull() const
+{
+	return CurrentAmmoWeapon.Bullets == 30;
 }
 
 void ALMA_BaseWeapon::ChangeClip() 

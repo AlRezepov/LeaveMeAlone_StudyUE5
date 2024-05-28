@@ -23,6 +23,7 @@ public:
 	void Fire();
 	void FireOff();
 
+	void OnBulletsFinished();
 	void Reload();
 	bool CanReload() const;
 

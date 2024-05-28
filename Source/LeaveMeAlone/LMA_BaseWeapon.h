@@ -7,7 +7,8 @@
 #include "LMA_BaseWeapon.generated.h"
 
 class USkeletalMeshComponent;
-class ULMAWeaponComponent;
+
+DECLARE_MULTICAST_DELEGATE(FOnBulletsFinished);
 
 USTRUCT(BlueprintType) struct FAmmoWeapon
 {
@@ -31,6 +32,10 @@ public:
 
 	void Fire(bool OnFire);
 	void ChangeClip();
+
+	FOnBulletsFinished OnBulletsFinished;
+
+	bool IsCurrentClipFull() const;
 
 protected:
 	// Called when the game starts or when spawned
