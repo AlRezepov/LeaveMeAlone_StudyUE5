@@ -6,7 +6,7 @@
 #include "Components/ActorComponent.h"
 #include "ALMAHealthComponent.generated.h"
 
-DECLARE_MULTICAST_DELEGATE(FOnDeath);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnDeath);
 DECLARE_MULTICAST_DELEGATE_OneParam(FOnHealthChanged, float);
 
 UCLASS(ClassGroup = (Custom), meta = (BlueprintSpawnableComponent))
@@ -22,9 +22,11 @@ public:
 	float GetHealth() const { return Health; }
 
 	UFUNCTION(BlueprintCallable)
-	bool IsDead() const;
+	bool IsDead();
 
+	UPROPERTY(BlueprintCallable)
 	FOnDeath OnDeath;
+
 	FOnHealthChanged OnHealthChanged;
 
 	bool AddHealth(float NewHealth);
@@ -37,12 +39,11 @@ protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
 	float MaxHealth = 100.0f;
 
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
+	float Health = 0.0f;
+
 private:
-	
 	UFUNCTION()
 	void OnTakeAnyDamage(
 		AActor* DamagedActor, float Damage, const class UDamageType* DamageType, class AController* InstigatedBy, AActor* DamageCauser);
-
-	float Health = 0.0f;
-
 };

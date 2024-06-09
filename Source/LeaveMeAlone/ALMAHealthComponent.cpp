@@ -12,7 +12,7 @@ UALMAHealthComponent::UALMAHealthComponent()
 	// ...
 }
 
-bool UALMAHealthComponent::IsDead() const
+bool UALMAHealthComponent::IsDead()
 {
 	return Health <= 0.0f;
 }

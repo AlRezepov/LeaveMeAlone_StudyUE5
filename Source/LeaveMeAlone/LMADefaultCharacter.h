@@ -50,6 +50,11 @@ protected:
 	UPROPERTY(EditDefaultsOnly, Category = "Animation")
 	UAnimMontage* DeathMontage;
 
+	// Смерть персонажа
+	UFUNCTION()
+	void OnDeath();
+
+
 	// Функция для Sprint
 	UFUNCTION(BlueprintCallable)
 	void SprintOn();
@@ -101,9 +106,6 @@ private:
 	void StaminaControl();
 	void UpdateMovementStatus();
 	float Stamina = 100.0f;
-
-	// Смерть персонажа
-	void OnDeath();
 
 	// Отключение интерпретации персонажа относительно положения курсора.
 	void RotationPlayerOnCursor();
