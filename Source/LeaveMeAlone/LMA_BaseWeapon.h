@@ -35,7 +35,7 @@ public:
 
 	FOnBulletsFinished OnBulletsFinished;
 
-	bool IsCurrentClipFull() const;
+	bool IsCurrentClipFull();
 
 protected:
 	// Called when the game starts or when spawned
@@ -59,7 +59,7 @@ protected:
 	FAmmoWeapon CurrentAmmoWeapon = AmmoWeapon;
 
 	void DecrementBullets();
-	bool IsCurrentClipEmpty() const;
+	bool IsCurrentClipEmpty();
 
 private:
 	

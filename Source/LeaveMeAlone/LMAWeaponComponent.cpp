@@ -87,10 +87,10 @@ void ULMAWeaponComponent::OnBulletsFinished()
 	Reload();
 }
 
-bool ULMAWeaponComponent::CanReload() const
+bool ULMAWeaponComponent::CanReload()
 {
-	const auto Character = Cast<ALMADefaultCharacter>(GetOwner());
-	if (Character->IsRunning() && Weapon->IsCurrentClipFull())
+	auto Character = Cast<ALMADefaultCharacter>(GetOwner());
+	if (Character->IsRunning() || Weapon->IsCurrentClipFull())
 	{
 		return false;
 	}

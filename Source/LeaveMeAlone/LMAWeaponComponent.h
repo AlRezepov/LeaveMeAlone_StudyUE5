@@ -25,7 +25,7 @@ public:
 
 	void OnBulletsFinished();
 	void Reload();
-	bool CanReload() const;
+	bool CanReload();
 
 protected:
 	// Called when the game starts

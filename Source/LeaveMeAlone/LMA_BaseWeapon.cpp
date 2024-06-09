@@ -80,12 +80,12 @@ void ALMA_BaseWeapon::DecrementBullets()
 
 }
 
-bool ALMA_BaseWeapon::IsCurrentClipEmpty() const
+bool ALMA_BaseWeapon::IsCurrentClipEmpty()
 {
 	return CurrentAmmoWeapon.Bullets == 0;
 }
 
-bool ALMA_BaseWeapon::IsCurrentClipFull() const
+bool ALMA_BaseWeapon::IsCurrentClipFull()
 {
 	return CurrentAmmoWeapon.Bullets == 30;
 }
