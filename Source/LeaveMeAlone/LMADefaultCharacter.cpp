@@ -60,6 +60,9 @@ void ALMADefaultCharacter::BeginPlay()
 	// Подписка на делегат FOnHealthChanged
 	HealthComponent->OnHealthChanged.AddUObject(this, &ALMADefaultCharacter::OnHealthChanged);
 
+	// Подписка на делегат FOnDeath
+	HealthComponent->OnDeath.AddUObject(this, &ALMADefaultCharacter::OnDeath);
+
 
 }
 
@@ -101,9 +104,6 @@ void ALMADefaultCharacter::Tick(float DeltaTime)
 	
 	//Условия траты и восполнения Stamina
 	StaminaControl();
-
-	//Подписка на делегат
-	HealthComponent->OnDeath.AddUObject(this, &ALMADefaultCharacter::OnDeath);
 
 }
 
@@ -210,8 +210,7 @@ void ALMADefaultCharacter::UpdateMovementStatus()
 
 void ALMADefaultCharacter::OnDeath() 
 {
-	//Заменил CurrentCursor->DestroyRenderState_Concurrent(); из за ошибки рендеринга
-	CurrentCursor->DestroyComponent();
+	CurrentCursor->DestroyRenderState_Concurrent();
 
 	PlayAnimMontage(DeathMontage);
 	GetCharacterMovement()->DisableMovement();
