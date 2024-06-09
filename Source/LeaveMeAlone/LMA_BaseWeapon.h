@@ -37,6 +37,8 @@ public:
 
 	bool IsCurrentClipFull();
 
+	FAmmoWeapon GetCurrentAmmoWeapon() const { return CurrentAmmoWeapon; }
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
