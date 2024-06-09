@@ -66,19 +66,6 @@ void ALMADefaultCharacter::BeginPlay()
 
 }
 
-void ALMADefaultCharacter::OnHealthChanged(float NewHealth) 
-{
-	// Проверка уровня Health
-	FString HealthString = FString::Printf(TEXT("Health: %.2f"), HealthComponent->GetHealth());
-	float TimeToDisplay = 2.0f;
-	FColor HealthColor = FColor::Green;
-	int32 HealthKey = 0;
-	if (GEngine)
-	{
-		GEngine->AddOnScreenDebugMessage(HealthKey, TimeToDisplay, HealthColor, HealthString);
-	}
-}
-
 // Called every frame
 void ALMADefaultCharacter::Tick(float DeltaTime)
 {

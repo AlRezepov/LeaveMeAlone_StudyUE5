@@ -14,7 +14,6 @@ class UDecalComponent;
 class UMaterialInterface;
 class UAnimMontage;
 
-
 UCLASS()
 class LEAVEMEALONE_API ALMADefaultCharacter : public ACharacter
 {
@@ -23,6 +22,10 @@ class LEAVEMEALONE_API ALMADefaultCharacter : public ACharacter
 public:
 	// Sets default values for this character's properties
 	ALMADefaultCharacter();
+
+	// Функция при срабатывании делегата OnHealthChanged
+	UFUNCTION(BlueprintImplementableEvent)
+	void OnHealthChanged(float NewHealth);
 
 protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Components")
@@ -34,7 +37,7 @@ protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Components|Health")
 	UALMAHealthComponent* HealthComponent;
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Components") 
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Components")
 	ULMAWeaponComponent* WeaponComponent;
 
 	UPROPERTY()
@@ -60,10 +63,6 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
-	//Функция при срабатывании делегата OnHealthChanged
-	void OnHealthChanged(float NewHealth); 
-
-
 public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
@@ -71,11 +70,10 @@ public:
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
-	UFUNCTION() 
+	UFUNCTION()
 	UALMAHealthComponent* GetHealthComponent() const { return HealthComponent; }
 
 	bool IsRunning() const;
-
 
 private:
 	float YRotation = -75.0f; // отвечает за поворот камеры по оси Y.
@@ -95,20 +93,18 @@ private:
 	float MaxArmLength = 1400.0f;
 	float MinArmLength = 400.0f;
 
-	// Переменные для скорости перемещения персонажа 
+	// Переменные для скорости перемещения персонажа
 	float MaxSpeed = 800.0f;
 	float NormalSpeed = 300.0f;
 
-	//Параметр и функция выносливости
+	// Параметр и функция выносливости
 	void StaminaControl();
 	void UpdateMovementStatus();
 	float Stamina = 100.0f;
 
-	//Смерть персонажа
+	// Смерть персонажа
 	void OnDeath();
 
-	//Отключение интерпретации персонажа относительно положения курсора.
+	// Отключение интерпретации персонажа относительно положения курсора.
 	void RotationPlayerOnCursor();
-
-
 };
