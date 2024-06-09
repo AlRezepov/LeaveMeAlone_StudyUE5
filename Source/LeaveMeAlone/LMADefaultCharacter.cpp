@@ -1,6 +1,7 @@
 // LeaveMeAlone Game by Netologiya. All RightsReserved.
 
 #include "LMADefaultCharacter.h"
+#include "Blueprint/UserWidget.h"
 #include "Camera/CameraComponent.h"
 #include "Components/DecalComponent.h"
 #include "Components/InputComponent.h"
@@ -9,6 +10,8 @@
 #include "GameFramework/CharacterMovementComponent.h"
 #include <Kismet/GameplayStatics.h>
 #include <Kismet/KismetMathLibrary.h>
+#include <LMAPlayerController.h>
+#include <BaseHUD.h>
 
 // Sets default values
 ALMADefaultCharacter::ALMADefaultCharacter()
@@ -198,6 +201,19 @@ void ALMADefaultCharacter::UpdateMovementStatus()
 void ALMADefaultCharacter::OnDeath() 
 {
 	CurrentCursor->DestroyRenderState_Concurrent();
+
+	auto PlayerController = Cast<ALMAPlayerController>(Controller);
+	if (PlayerController)
+	{
+		auto HUD = Cast<ABaseHUD>(PlayerController->GetHUD());
+		if (HUD)
+		{
+			for (auto Widget : HUD->WidgetContainer)
+			{
+				Widget->RemoveFromParent();
+			}
+		}
+	}
 
 	PlayAnimMontage(DeathMontage);
 	GetCharacterMovement()->DisableMovement();
