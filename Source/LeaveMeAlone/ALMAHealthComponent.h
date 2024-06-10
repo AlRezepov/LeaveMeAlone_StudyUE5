@@ -24,7 +24,7 @@ public:
 	UFUNCTION(BlueprintCallable)
 	bool IsDead();
 
-	UPROPERTY(BlueprintCallable)
+	UPROPERTY(BlueprintAssignable)
 	FOnDeath OnDeath;
 
 	FOnHealthChanged OnHealthChanged;
