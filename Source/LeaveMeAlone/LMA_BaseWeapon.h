@@ -7,6 +7,7 @@
 #include "LMA_BaseWeapon.generated.h"
 
 class USkeletalMeshComponent;
+class USoundWave;
 
 DECLARE_MULTICAST_DELEGATE(FOnBulletsFinished);
 
@@ -45,6 +46,9 @@ protected:
 
 	void Shoot();
 	bool IsFire = false;
+	
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Weapon")
+	USoundWave* ShootWave;
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Weapon")
 	float ShootInterval = 0.1f;

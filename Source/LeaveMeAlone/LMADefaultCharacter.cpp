@@ -80,14 +80,14 @@ void ALMADefaultCharacter::Tick(float DeltaTime)
 	}
 
 	// Проверка уровня Stamina
-	FString StaminaString = FString::Printf(TEXT("Stamina: %.2f"), Stamina);
+	/*FString StaminaString = FString::Printf(TEXT("Stamina: %.2f"), Stamina);
 	float TimeToDisplay = 2.0f;
 	FColor StaminaColor = FColor::Red;
 	int32 StaminaKey = 1;
 	if (GEngine)
 	{
 		GEngine->AddOnScreenDebugMessage(StaminaKey, TimeToDisplay, StaminaColor, StaminaString);
-	}
+	}*/
 
 	// Проверка, движется ли персонаж вперёд
 	UpdateMovementStatus();
