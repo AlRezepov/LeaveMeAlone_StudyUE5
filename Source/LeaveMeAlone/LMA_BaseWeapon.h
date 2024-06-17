@@ -8,6 +8,7 @@
 
 class USkeletalMeshComponent;
 class USoundWave;
+class UNiagaraSystem;
 
 DECLARE_MULTICAST_DELEGATE(FOnBulletsFinished);
 
@@ -47,6 +48,14 @@ protected:
 	void Shoot();
 	bool IsFire = false;
 	
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Weapon")
+	UNiagaraSystem* TraceEffect;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Weapon")
+	FString TraceName = "Tracer";
+
+	void SpawnTrace(const FVector& TraceStart, const FVector& TraceEnd);
+
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Weapon")
 	USoundWave* ShootWave;
 	
